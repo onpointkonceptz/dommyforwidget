@@ -165,5 +165,126 @@
 
     <script type="module" src="index.tsx"></script>
 <script type="module" src="/index.tsx"></script>
+    <!-- Start of Aya Chat Widget Integration Code -->
+
+<!-- 1. The button that will open the chat -->
+<button id="aya-open-chat-btn" aria-label="Open chat with Aya">
+    <!-- Icon for the button -->
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M20 2H4C2.9 2 2 2.9 2 4V22L6 18H20C21.1 18 22 17.1 22 16V4C22 2.9 21.1 2 20 2Z"></path></svg>
+</button>
+
+<!-- 2. The container for the chat widget iframe -->
+<div id="aya-widget-container" class="hidden">
+  <!-- 
+    IMPORTANT: Change the src attribute below to the URL where you hosted the widget's index.html file. 
+  -->
+  <iframe 
+    id="aya-widget-iframe"
+    src="https://your-website.com/aya-widget/index.html" 
+    title="Aya - FNPH Kaduna Assistant"
+    frameborder="0">
+  </iframe>
+</div>
+
+<!-- 3. CSS to style the button and the widget container -->
+<style>
+  #aya-open-chat-btn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 60px;
+    height: 60px;
+    background-color: #0d5c31; /* FNPH Primary Green */
+    color: white;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    z-index: 9998;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s ease-in-out;
+  }
+  #aya-open-chat-btn:hover {
+    transform: scale(1.1);
+  }
+  #aya-open-chat-btn svg {
+    width: 32px;
+    height: 32px;
+  }
+
+  #aya-widget-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 100%;
+    height: 100%;
+    max-width: 400px; /* Adjust as needed */
+    max-height: 80vh; /* Adjust as needed */
+    z-index: 9999;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+    transform: scale(0.95);
+    transform-origin: bottom right;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+  }
+  #aya-widget-container:not(.hidden) {
+    transform: scale(1);
+    opacity: 1;
+    pointer-events: auto;
+  }
+  #aya-widget-container.hidden {
+    display: block !important; /* Keep it in the DOM for transitions */
+  }
+
+  #aya-widget-iframe {
+    width: 100%;
+    height: 100%;
+  }
+
+  /* Media query for smaller screens */
+  @media (max-width: 600px) {
+    #aya-widget-container {
+      bottom: 0;
+      right: 0;
+      width: 100%;
+      height: 100%;
+      max-width: 100%;
+      max-height: 100%;
+      border-radius: 0;
+    }
+  }
+</style>
+
+<!-- 4. JavaScript to control the widget's visibility -->
+<script>
+  const openChatBtn = document.getElementById('aya-open-chat-btn');
+  const widgetContainer = document.getElementById('aya-widget-container');
+
+  // Function to toggle the chat widget
+  function toggleAyaWidget() {
+    const isHidden = widgetContainer.classList.contains('hidden');
+    widgetContainer.classList.toggle('hidden', !isHidden);
+    // Hide the chat button when the widget is open
+    openChatBtn.style.display = isHidden ? 'none' : 'flex';
+  }
+
+  // Open/close the widget when the button is clicked
+  openChatBtn.addEventListener('click', toggleAyaWidget);
+
+  // Listen for the close message from the iframe
+  window.addEventListener('message', (event) => {
+    // We only care about messages from our widget
+    if (event.data && event.data.type === 'AyaWidget-close') {
+      toggleAyaWidget();
+    }
+  });
+</script>
+
+<!-- End of Aya Chat Widget Integration Code -->
 </body>
 </html>
