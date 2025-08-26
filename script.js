@@ -1,4 +1,4 @@
-const API_KEY = "YOUR_GOOGLE_AI_API_KEY";
+const API_KEY = "AIzaSyCTVrURqneLmyddpIHKkYYeV9oJEU_XeLM";
 const chatBox = document.getElementById("chat-box");
 const inputField = document.getElementById("user-input");
 const sendButton = document.getElementById("send-btn");
