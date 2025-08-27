@@ -1,286 +1,78 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Federal Neuro-Psychiatric Hospital - Kaduna</title>
-    <meta name="description" content="A leading neuropsychiatric hospital dedicated to providing excellent and accessible mental healthcare services, training, and research.">
-    <link rel="stylesheet" href="index.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <script type="importmap">
-      {
-        "imports": {
-          "@google/genai": "https://esm.sh/@google/genai@^0.7.0"
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FNPH AI - FNPH Kaduna Assistant</title>
+  <link rel="stylesheet" href="index.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+  <script type="importmap">
+    {
+      "imports": {
+        "@google/genai": "https://esm.sh/@google/genai@^0.7.0"
       }
-    </script>
+    }
+  </script>
 <link rel="stylesheet" href="/index.css">
 </head>
 <body>
-    <header class="header">
-        <div class="container header-container">
-            <a href="https://www.fnphkaduna.com/" class="logo">
-                <img src="https://placehold.co/50x50/005a9c/ffffff?text=LOGO" alt="Hospital Logo">
-                <span>FNPH Kaduna</span>
-            </a>
-            <button class="nav-toggle" aria-label="toggle navigation">
-                <span class="hamburger"></span>
-            </button>
-            <nav class="nav">
-                <ul class="nav__list">
-                    <li class="nav__item"><a href="https://www.fnphkaduna.com/" class="nav__link">Home</a></li>
-                    <li class="nav__item dropdown">
-                        <a href="https://www.fnphkaduna.com/" class="nav__link">About Us <i class="fas fa-chevron-down"></i></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="https://www.fnphkaduna.com/">History</a></li>
-                            <li><a href="https://www.fnphkaduna.com/">Mission & Vision</a></li>
-                            <li><a href="https://www.fnphkaduna.com/">Management Team</a></li>
-                        </ul>
-                    </li>
-                    <li class="nav__item"><a href="https://www.fnphkaduna.com/" class="nav__link">Services</a></li>
-                    <li class="nav__item"><a href="https://www.fnphkaduna.com/" class="nav__link">Training & Research</a></li>
-                    <li class="nav__item"><a href="https://www.fnphkaduna.com/" class="nav__link">Patient Guide</a></li>
-                    <li class="nav__item"><a href="https://www.fnphkaduna.com/" class="nav__link">Contact</a></li>
-                </ul>
-            </nav>
-            <a href="#appointment-form" class="btn btn--primary btn--header">Book Appointment</a>
-        </div>
+  <div id="chat-container">
+    <header id="chat-header">
+      <div id="logo"></div>
+      <div id="header-title">
+        <h1>FNPH AI</h1>
+        <span>Assistant</span>
+      </div>
+      <button id="clear-chat-btn" aria-label="Clear Conversation">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M17 6h5v2h-2v13a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V8H2V6h5V3a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v3zm-2-3H9v3h6V3zm-2 8v6h-2v-6h2zm-4 0v6H7v-6h2z"></path></svg>
+      </button>
+      <button id="dark-mode-toggle" aria-label="Toggle dark mode">
+        <svg id="theme-icon-sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.5C12.2761 2.5 12.5 2.72386 12.5 3V4.5C12.5 4.77614 12.2761 5 12 5C11.7239 5 11.5 4.77614 11.5 4.5V3C11.5 2.72386 11.7239 2.5 12 2.5ZM5.13397 5.13397C5.32924 4.93871 5.64582 4.93871 5.84108 5.13397L6.89665 6.18954C7.09191 6.3848 7.09191 6.70138 6.89665 6.89665C6.70138 7.09191 6.3848 7.09191 6.18954 6.89665L5.13397 5.84108C4.93871 5.64582 4.93871 5.32924 5.13397 5.13397ZM18.866 5.13397C19.0613 5.32924 19.0613 5.64582 18.866 5.84108L17.8105 6.89665C17.6152 7.09191 17.2986 7.09191 17.1034 6.89665C16.9081 6.70138 16.9081 6.3848 17.1034 6.18954L18.1589 5.13397C18.3542 4.93871 18.6708 4.93871 18.866 5.13397ZM12 11C9.79086 11 8 12.7909 8 15C8 17.2091 9.79086 19 12 19C14.2091 19 16 17.2091 16 15C16 12.7909 14.2091 11 12 11ZM12 7C10.3431 7 9 8.34315 9 10C9 10.2761 9.22386 10.5 9.5 10.5C9.77614 10.5 10 10.2761 10 10C10 8.89543 10.8954 8 12 8C13.1046 8 14 8.89543 14 10C14 10.2761 14.2239 10.5 14.5 10.5C14.7761 10.5 15 10.2761 15 10C15 8.34315 13.6569 7 12 7ZM2.5 12C2.5 11.7239 2.72386 11.5 3 11.5H4.5C4.77614 11.5 5 11.7239 5 12C5 12.2761 4.77614 12.5 4.5 12.5H3C2.72386 12.5 2.5 12.2761 2.5 12ZM19.5 12C19.5 11.7239 19.7239 11.5 20 11.5H21.5C21.7761 11.5 22 11.7239 22 12C22 12.2761 21.7761 12.5 21.5 12.5H20C19.7239 12.5 19.5 12.2761 19.5 12ZM5.13397 18.866C4.93871 18.6708 4.93871 18.3542 5.13397 18.1589L6.18954 17.1034C6.3848 16.9081 6.70138 16.9081 6.89665 17.1034C7.09191 17.2986 7.09191 17.6152 6.89665 17.8105L5.84108 18.866C5.64582 19.0613 5.32924 19.0613 5.13397 18.866ZM18.866 18.866C18.6708 19.0613 18.3542 19.0613 18.1589 18.866L17.1034 17.8105C16.9081 17.6152 16.9081 17.2986 17.1034 17.1034C17.2986 16.9081 17.6152 16.9081 17.8105 17.1034L18.866 18.1589C19.0613 18.3542 19.0613 18.6708 18.866 18.866ZM12 19.5C11.7239 19.5 11.5 19.7239 11.5 20V21.5C11.5 21.7761 11.7239 22 12 22C12.2761 22 12.5 21.7761 12.5 21.5V20C12.5 19.7239 12.2761 19.5 12 19.5Z"></path></svg>
+        <svg id="theme-icon-moon" class="hidden" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M11.99 2C6.47 2 2 6.48 2 12C2 17.52 6.47 22 11.99 22C17.34 22 21.61 18.06 22 12.82C21.08 13.26 20.07 13.5 19 13.5C15.13 13.5 12 10.37 12 6.5C12 5.43 12.24 4.42 12.68 3.5C7.94 3.89 4.39 7.97 4.39 12.82C4.39 17.02 7.8 20.43 12 20.43C13.84 20.43 15.53 19.82 16.9 18.81C16.53 20.15 15.26 21.5 13.5 21.5C9.91 21.5 7 18.59 7 15C7 13.74 7.42 12.59 8.16 11.66C6.43 12.92 5.11 14.81 5.11 17C5.11 19.14 6.64 20.94 8.57 21.35C8.19 20.25 8 19.07 8 17.82C8 13.5 11.5 10 15.75 10C17.13 10 18.4 10.38 19.43 11.07C19.06 9.85 18.81 8.56 18.81 7.2C18.81 4.95 20.24 3 22 3C21.79 2.58 21.52 2.19 21.21 1.83C18.06 2.92 15.21 4.88 13.43 7.57C12.85 6.6 12.16 5.73 11.39 5.04C9.27 3.32 8.34 3.5 8.34 3.5C8.34 3.5 9.06 4.48 9.57 6.13C7.38 5.11 5.34 4.5 3.5 4.5C3.5 4.5 3.5 4.5 3.5 4.5C5.45 4.5 7.42 5.13 9.43 6.16C9.93 7.78 10.61 8.7 10.61 8.7C10.61 8.7 9.77 8.5 7.79 6.96C7.03 6.35 6.18 5.8 5.25 5.34C5.25 5.34 5.92 7.43 8.34 9.17C7.65 10.16 7.23 11.31 7.23 12.57C7.23 15.3 9.43 17.5 12.16 17.5C13.43 17.5 14.59 17.05 15.5 16.29C16.42 17.22 17.61 17.82 19 17.82C20.73 17.82 22.25 16.73 22.82 15.21C22.45 15.21 22.06 15.21 21.66 15.21C18.52 15.21 16 12.69 16 9.55C16 8.3 16.39 7.15 17.07 6.19C15.42 8.01 15.11 9.43 15.11 9.43C15.11 9.43 14.07 8.01 12.5 7.01C12.5 7.01 12.5 7.01 12.5 7L11.99 2Z"></path></svg>
+      </button>
+      <button id="close-widget-btn" aria-label="Close Chat">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M11.9997 10.5865L16.9495 5.63672L18.3637 7.05093L13.4139 12.0007L18.3637 16.9504L16.9495 18.3646L11.9997 13.4148L7.04996 18.3646L5.63574 16.9504L10.5855 12.0007L5.63574 7.05093L7.04996 5.63672L11.9997 10.5865Z"></path></svg>
+      </button>
     </header>
-
-    <main>
-        <section class="hero">
-            <div class="hero__overlay"></div>
-            <div class="container hero__content">
-                <h1 class="hero__title">Excellence in Mental Healthcare Delivery</h1>
-                <p class="hero__subtitle">Providing comprehensive, accessible, and affordable mental health services, training, and research.</p>
-                <div class="hero__buttons">
-                    <a href="https://www.fnphkaduna.com/" class="btn btn--primary">Our Services</a>
-                    <a href="https://www.fnphkaduna.com/" class="btn btn--secondary">Learn More</a>
-                </div>
-            </div>
-        </section>
-
-        <section class="services section">
-            <div class="container">
-                <h2 class="section__title">Our Core Services</h2>
-                <div class="services__grid">
-                    <div class="service-card">
-                        <i class="fas fa-clinic-medical fa-2x service-card__icon"></i>
-                        <h3 class="service-card__title">Outpatient Services</h3>
-                        <p>General and specialized psychiatric clinics for all ages.</p>
-                    </div>
-                    <div class="service-card">
-                        <i class="fas fa-procedures fa-2x service-card__icon"></i>
-                        <h3 class="service-card__title">Inpatient Services</h3>
-                        <p>24/7 care in our specialized wards for intensive treatment.</p>
-                    </div>
-                    <div class="service-card">
-                        <i class="fas fa-child fa-2x service-card__icon"></i>
-                        <h3 class="service-card__title">Child Psychiatry</h3>
-                        <p>Dedicated care for children and adolescents with mental health needs.</p>
-                    </div>
-                     <div class="service-card">
-                        <i class="fas fa-brain fa-2x service-card__icon"></i>
-                        <h3 class="service-card__title">Drug Rehabilitation</h3>
-                        <p>Comprehensive programs for substance abuse and recovery.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section class="about-us section bg-light">
-            <div class="container about-us__container">
-                <div class="about-us__image">
-                    <img src="https://placehold.co/600x400/eeeeee/333333?text=Hospital+Building" alt="Federal Neuro-Psychiatric Hospital Building">
-                </div>
-                <div class="about-us__content">
-                    <h2 class="section__title">About Our Hospital</h2>
-                    <p>The Federal Neuro-Psychiatric Hospital, Kaduna is a 550-bed hospital and a Federal Government owned psychiatric hospital. It is a center for postgraduate training in Psychiatry and has produced numerous Fellows of both the National and West African Postgraduate Medical Colleges.</p>
-                    <p>Our mission is to provide evidence-based, affordable, and accessible mental health services, train a skilled mental health workforce, and conduct impactful research.</p>
-                    <a href="https://www.fnphkaduna.com/" class="btn btn--primary">Read Our History</a>
-                </div>
-            </div>
-        </section>
-       
-        <section id="appointment-form" class="appointment section">
-            <div class="container">
-                <h2 class="section__title">Request an Appointment</h2>
-                <form class="appointment__form">
-                    <div class="form-group">
-                        <input type="text" id="name" name="name" placeholder="Full Name" required aria-label="Full Name">
-                    </div>
-                    <div class="form-group">
-                        <input type="email" id="email" name="email" placeholder="Email Address" required aria-label="Email Address">
-                    </div>
-                    <div class="form-group">
-                        <input type="tel" id="phone" name="phone" placeholder="Phone Number" required aria-label="Phone Number">
-                    </div>
-                    <div class="form-group">
-                        <textarea id="message" name="message" rows="4" placeholder="Briefly describe your inquiry" required aria-label="Your message"></textarea>
-                    </div>
-                    <button type="submit" class="btn btn--primary btn--full">Submit Inquiry</button>
-                    <p id="form-message" class="form-message" role="status"></p>
-                </form>
-            </div>
-        </section>
-
-    </main>
-
-    <footer class="footer">
-        <div class="container footer__container">
-            <div class="footer__col">
-                <h4 class="footer__title">About FNPH</h4>
-                <p>Federal Neuro-Psychiatric Hospital Kaduna is dedicated to being the leader in mental healthcare in Nigeria.</p>
-                <div class="socials">
-                    <a href="https://www.fnphkaduna.com/" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-                    <a href="https://www.fnphkaduna.com/" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
-                    <a href="https://www.fnphkaduna.com/" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
-                </div>
-            </div>
-            <div class="footer__col">
-                <h4 class="footer__title">Quick Links</h4>
-                <ul>
-                    <li><a href="https://www.fnphkaduna.com/">Our Services</a></li>
-                    <li><a href="https://www.fnphkaduna.com/">Management Team</a></li>
-                    <li><a href="https://www.fnphkaduna.com/">News & Updates</a></li>
-                    <li><a href="https://www.fnphkaduna.com/">Patient FAQs</a></li>
-                </ul>
-            </div>
-            <div class="footer__col">
-                <h4 class="footer__title">Contact Us</h4>
-                <ul>
-                    <li><i class="fas fa-map-marker-alt"></i> Barnawa, Kaduna, Nigeria</li>
-                    <li><i class="fas fa-phone-alt"></i> +234-XXX-XXXX-XXX</li>
-                    <li><i class="fas fa-envelope"></i> info@fnphkaduna.gov.ng</li>
-                </ul>
-            </div>
-        </div>
-        <div class="footer__bottom">
-            <p>&copy; 2025 Nwaeze Joshua Nonso. All Rights Reserved.</p>
-        </div>
-    </footer>
-
-    <script type="module" src="index.tsx"></script>
+    <div id="messages-container" role="log" aria-live="polite">
+      <!-- Messages will be injected here -->
+    </div>
+    <div id="image-preview-container" class="hidden"></div>
+    <form id="chat-form">
+      <button type="button" id="upload-btn" aria-label="Upload image">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M14.828 7.757L6.343 16.243l-1.414-1.414 8.485-8.485a4 4 0 0 1 5.657 5.657l-8.485 8.485-1.414-1.414 7.071-7.071a2 2 0 1 0-2.828-2.828L6.343 14.828l-1.414-1.414L13.414 4.93a4 4 0 0 1 5.657 0l1.414 1.414a6 6 0 0 0-8.485-8.485L3.515 16.243a1 1 0 1 0 1.414 1.414L13.414 9.172a2 2 0 1 1 2.828 2.828L7.757 20.485a4 4 0 1 1-5.657-5.657l1.414-1.414 1.414 1.414-1.414 1.414a2 2 0 1 0 2.828 2.828l8.485-8.485a1 1 0 0 1-1.414-1.414z"></path></svg>
+      </button>
+       <button type="button" id="mic-btn" aria-label="Record voice note">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 1C10.3431 1 9 2.34315 9 4V12C9 13.6569 10.3431 15 12 15C13.6569 15 15 13.6569 15 12V4C15 2.34315 13.6569 1 12 1ZM19 12C19 15.866 15.866 19 12 19C8.13401 19 5 15.866 5 12H7C7 14.7614 9.23858 17 12 17C14.7614 17 17 14.7614 17 12H19ZM12 21C12.5523 21 13 21.4477 13 22V23H11V22C11 21.4477 11.4477 21 12 21Z"></path></svg>
+      </button>
+      <textarea id="prompt-input" placeholder="Ask FNPH AI anything..." autocomplete="off" rows="1"></textarea>
+      <button type="button" id="send-btn" aria-label="Send message">
+         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M3.47798 2.31018L21.0116 10.5185C21.7925 10.8539 21.8601 11.9078 21.1332 12.336L12.9348 16.7917L12.9348 21.4457C12.9348 22.3013 11.9168 22.6865 11.3061 22.0758L8.89539 19.6651L4.5441 21.8848C3.89997 22.1813 3.12517 21.6738 3.03052 20.941L1.03052 7.00411C0.916911 6.13685 1.74291 5.43285 2.58432 5.64299L8.49132 7.0519L17.4473 11.4241L3.47798 2.31018Z"></path></svg>
+      </button>
+    </form>
+  </div>
+  <input type="file" id="image-upload-input" class="hidden" accept="image/*" />
+  <script type="module" src="index.tsx"></script>
 <script type="module" src="/index.tsx"></script>
-    <button id="aya-open-chat-btn" aria-label="Open chat with Aya">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M20 2H4C2.9 2 2 2.9 2 4V22L6 18H20C21.1 18 22 17.1 22 16V4C22 2.9 21.1 2 20 2Z"></path></svg>
-</button>
-
-<div id="aya-widget-container" class="hidden">
-    <iframe 
-        id="aya-widget-iframe"
-        src="https://onpointkonceptz.github.io/aya/" 
-        title="Aya - FNPH Kaduna Assistant"
-        frameborder="0"
-        allow="microphone; camera"
-    ></iframe>
-</div>
-
-<style>
-    #aya-open-chat-btn {
-        position: fixed;
-        bottom: 20px;
-        right: 20px;
-        width: 60px;
-        height: 60px;
-        background-color: #0d5c31; /* FNPH Primary Green */
-        color: white;
-        border: none;
-        border-radius: 50%;
-        cursor: pointer;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-        z-index: 9998;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: transform 0.2s ease-in-out;
-    }
-    #aya-open-chat-btn:hover {
-        transform: scale(1.1);
-    }
-    #aya-open-chat-btn svg {
-        width: 32px;
-        height: 32px;
-    }
-
-    #aya-widget-container {
-        position: fixed;
-        bottom: 20px;
-        right: 20px;
-        width: 100%;
-        height: 100%;
-        max-width: 400px; /* Adjust as needed */
-        max-height: 80vh; /* Adjust as needed */
-        z-index: 9999;
-        border-radius: 20px;
-        overflow: hidden;
-        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
-        transform: scale(0.95);
-        transform-origin: bottom right;
-        opacity: 0;
-        pointer-events: none;
-        transition: opacity 0.3s ease, transform 0.3s ease;
-    }
-    #aya-widget-container:not(.hidden) {
-        transform: scale(1);
-        opacity: 1;
-        pointer-events: auto;
-    }
-    #aya-widget-container.hidden {
-        display: block !important; /* Keep it in the DOM for transitions */
-    }
-
-    #aya-widget-iframe {
-        width: 100%;
-        height: 100%;
-    }
-
-    /* Media query for smaller screens */
-    @media (max-width: 600px) {
-        #aya-widget-container {
-            bottom: 0;
-            right: 0;
-            width: 100%;
-            height: 100%;
-            max-width: 100%;
-            max-height: 100%;
-            border-radius: 0;
-        }
-    }
-</style>
-
-<div id="chat-box"></div>
-<input id="user-input" type="text" placeholder="Type your message...">
-<button id="send-btn">Send</button>
-
-<script>
-    const openChatBtn = document.getElementById('aya-open-chat-btn');
-    const widgetContainer = document.getElementById('aya-widget-container');
-
-    // Function to toggle the chat widget
-    function toggleAyaWidget() {
-        const isHidden = widgetContainer.classList.contains('hidden');
-        widgetContainer.classList.toggle('hidden', !isHidden);
-        // Hide the chat button when the widget is open
-        openChatBtn.style.display = isHidden ? 'none' : 'flex';
-    }
-
-    // Open/close the widget when the button is clicked
-    openChatBtn.addEventListener('click', toggleAyaWidget);
-
-    // Listen for the close message from the iframe
-    window.addEventListener('message', (event) => {
-        // We only care about messages from our widget
-        if (event.data && event.data.type === 'AyaWidget-close') {
-            toggleAyaWidget();
-        }
-    });
-</script>
-
-<script src="script.js"></script>
-
+    <!-- FNPH AI Chat Widget Embed Code -->
+<iframe
+  src="https://www.yourhospitalwebsite.com/chat-widget/index.html"
+  style="
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 100%;
+    height: 90%;
+    max-width: 400px;
+    max-height: 650px;
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    z-index: 9999;
+  "
+  title="FNPH AI Assistant">
+</iframe>
 </body>
 </html>
